@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ระบบจัดครูสอนแทน</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@500;600;700&family=Prompt:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --pink:#ff5c93; --pink-dark:#f23c7d; --pink-soft:#ffe4ef; --pink-line:#ffc9dd;
+    --purple:#8b5cf6; --purple-dark:#7c3aed; --purple-soft:#ede4ff; --purple-line:#ddccfa;
+    --sky:#3ab7f0; --sky-soft:#dcf1fd; --sky-line:#bce6fa;
+    --mint:#18c48a; --mint-dark:#12a875; --mint-soft:#d6f7ec; --mint-line:#b3edda;
+    --sunny:#f5a623; --sunny-soft:#fff0d6;
+    --coral:#ff6b6b; --coral-soft:#ffe3e3; --coral-line:#ffc9c9;
+    --ink:#463a54; --muted:#9b8fb0;
+    --card:#ffffff; --line:#f0e6f7;
+    --radius:20px; --radius-sm:14px;
+    --shadow:0 6px 22px rgba(255,92,147,.10),0 2px 8px rgba(139,92,246,.07);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:'Prompt',sans-serif;
+    background:linear-gradient(165deg,#fff5fb 0%,#f4f0ff 48%,#eaf7ff 100%);
+    background-attachment:fixed;min-height:100vh;
+    color:var(--ink);font-size:16px;line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,.stat .n,.logo{font-family:'Mali',cursive}
+  .wrap{max-width:960px;margin:0 auto;padding:0 16px 90px}
+
+  /* Header */
+  header{
+    background:linear-gradient(120deg,#ff9dc0 0%,#ff5c93 42%,#9d6bf0 100%);
+    color:#fff;padding:26px 0 24px;margin-bottom:24px;
+    border-radius:0 0 30px 30px;box-shadow:0 10px 30px rgba(255,92,147,.28);
+  }
+  header .wrap{padding-bottom:0}
+  .brand{display:flex;align-items:center;gap:14px}
+  .logo{
+    width:52px;height:52px;border-radius:18px;background:rgba(255,255,255,.22);
+    display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;
+    box-shadow:0 4px 14px rgba(0,0,0,.12);
+  }
+  header h1{font-size:26px;font-weight:700;letter-spacing:.2px;text-shadow:0 2px 8px rgba(0,0,0,.12)}
+  header .school{font-family:'Mali',cursive;font-size:15px;font-weight:600;opacity:.95;margin-bottom:2px;
+    display:inline-block;background:rgba(255,255,255,.2);padding:3px 12px;border-radius:999px}
+  header p{font-size:15px;opacity:.92;font-weight:400;font-family:'Prompt',sans-serif}
+
+  /* Tabs */
+  .tabs{display:flex;gap:6px;background:var(--card);border:1px solid var(--line);
+    border-radius:var(--radius);padding:6px;margin-bottom:24px;box-shadow:var(--shadow)}
+  .tab{
+    flex:1;text-align:center;padding:12px 8px;border-radius:15px;cursor:pointer;
+    font-family:'Prompt',sans-serif;font-weight:600;font-size:16px;color:var(--muted);
+    border:none;background:none;transition:.18s;
+  }
+  .tab:hover{color:var(--ink);background:#faf5ff}
+  .tab.active{color:#fff;box-shadow:0 4px 12px rgba(0,0,0,.10)}
+  .tab[data-tab="assign"].active{background:linear-gradient(135deg,#ff9dc0,#ff5c93)}
+  .tab[data-tab="teachers"].active{background:linear-gradient(135deg,#6fd0f7,#3ab7f0)}
+  .tab[data-tab="history"].active{background:linear-gradient(135deg,#b79bf7,#8b5cf6)}
+
+  .panel{display:none}
+  .panel.active{display:block}
+
+  /* Cards */
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:24px;margin-bottom:20px;box-shadow:var(--shadow)}
+  .card h2{font-size:20px;font-weight:700;color:var(--pink-dark);margin-bottom:4px;
+    display:flex;align-items:center;gap:8px}
+  .card .sub{font-size:14px;color:var(--muted);margin-bottom:18px;line-height:1.5}
+
+  /* Form */
+  .field{margin-bottom:15px}
+  label{display:block;font-family:'Prompt',sans-serif;font-weight:600;font-size:15px;margin-bottom:6px;color:var(--ink)}
+  input,select,textarea{
+    width:100%;font-family:'Prompt',sans-serif;font-size:16px;padding:11px 14px;
+    border:1.5px solid var(--line);border-radius:var(--radius-sm);background:#fff;color:var(--ink);
+    transition:.15s;
+  }
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--pink);
+    box-shadow:0 0 0 4px var(--pink-soft)}
+  .row{display:flex;gap:14px;flex-wrap:wrap}
+  .row > .field{flex:1;min-width:130px}
+
+  .btn{
+    font-family:'Prompt',sans-serif;font-size:16px;font-weight:600;padding:12px 24px;border-radius:999px;
+    border:none;cursor:pointer;color:#fff;transition:.18s;
+    background:linear-gradient(135deg,#ff7aab,#ff5c93);box-shadow:0 4px 14px rgba(255,92,147,.32);
+  }
+  .btn:hover{filter:brightness(1.04);transform:translateY(-1px);box-shadow:0 6px 18px rgba(255,92,147,.4)}
+  .btn:active{transform:translateY(0)}
+  .btn.ghost{background:#fff;color:var(--pink-dark);border:1.5px solid var(--pink-line);box-shadow:none}
+  .btn.ghost:hover{background:var(--pink-soft)}
+  .btn.sm{padding:8px 16px;font-size:14px}
+  .btn.danger{background:#fff;color:#e23a63;border:1.5px solid var(--coral-line);box-shadow:none}
+  .btn.danger:hover{background:var(--coral-soft)}
+  .btn.amber{background:linear-gradient(135deg,#3ad99a,#18c48a);box-shadow:0 4px 14px rgba(24,196,138,.32)}
+  .btn.amber:hover{filter:brightness(1.04)}
+
+  /* Period rows */
+  .period-list{margin-top:6px}
+  .period-row{
+    display:grid;grid-template-columns:64px 1fr 1.4fr 1.6fr 40px;gap:12px;align-items:end;
+    padding:14px;background:linear-gradient(135deg,#fff6fb,#fdf0ff);
+    border:1.5px solid var(--pink-line);border-radius:16px;margin-bottom:12px;
+  }
+  .period-row label{font-family:'Prompt',sans-serif;font-size:13px;margin-bottom:4px;color:var(--pink-dark)}
+  .period-row input,.period-row select{padding:9px 11px;font-size:15px;background:#fff}
+  .del-x{
+    background:none;border:none;color:var(--coral);font-size:24px;cursor:pointer;
+    padding:0;height:42px;line-height:1;font-weight:400;
+  }
+  .del-x:hover{color:#e23a63}
+  .sub-badge{font-size:12px;color:var(--muted);font-weight:400}
+
+  /* Teacher chips */
+  .teacher-grid{display:flex;flex-wrap:wrap;gap:10px}
+  .t-chip{
+    display:flex;align-items:center;gap:8px;
+    background:linear-gradient(135deg,#f6efff,#efe4ff);
+    border:1.5px solid var(--purple-line);border-radius:999px;padding:7px 10px 7px 16px;
+    font-size:15px;font-weight:500;color:var(--ink);
+  }
+  .t-chip .cnt{background:linear-gradient(135deg,#ff7aab,#ff5c93);color:#fff;border-radius:999px;
+    min-width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;
+    font-size:12px;font-weight:700;padding:0 7px;box-shadow:0 2px 6px rgba(255,92,147,.35)}
+  .t-chip button{background:none;border:none;color:var(--coral);cursor:pointer;font-size:19px;
+    padding:0 4px;line-height:1}
+  .t-chip button:hover{color:#e23a63}
+  .t-chip.subj{background:linear-gradient(135deg,#e7fbf3,#d6f7ec);border-color:var(--mint-line)}
+  .t-chip.subj button{color:var(--mint-dark)}
+
+  /* Tables */
+  table{width:100%;border-collapse:collapse;font-size:15px}
+  th,td{text-align:left;padding:11px 13px;border-bottom:1px solid var(--line)}
+  th{background:var(--purple-soft);color:var(--purple-dark);font-weight:600;font-size:14px}
+  th:first-child{border-radius:10px 0 0 0}
+  th:last-child{border-radius:0 10px 0 0}
+  tr:last-child td{border-bottom:none}
+  .center{text-align:center}
+
+  /* Pills */
+  .pill{display:inline-block;padding:4px 13px;border-radius:999px;font-size:13px;font-weight:600}
+  .pill.leave{background:var(--sky-soft);color:#1e8fc4}
+  .pill.sick{background:#ffe0e8;color:#e23a63}
+  .pill.official{background:var(--sunny-soft);color:#d98a1a}
+  .pill.train{background:var(--purple-soft);color:#7c3aed}
+  .pill.other{background:#eef0f5;color:#8a8296}
+
+  .empty{text-align:center;padding:46px 20px;color:var(--muted)}
+  .empty .big{font-size:44px;margin-bottom:10px}
+
+  .hist-item{border:1.5px solid var(--line);border-radius:16px;padding:18px;margin-bottom:16px;
+    background:linear-gradient(180deg,#fffdff,#fdf7ff)}
+  .hist-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;
+    gap:8px;margin-bottom:12px}
+  .hist-head .date{font-family:'Mali',cursive;font-weight:700;color:var(--pink-dark);font-size:16px}
+  .hist-head .who{font-size:15px}
+
+  /* Stats */
+  .stat-grid{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:8px}
+  .stat{flex:1;min-width:140px;border-radius:16px;padding:16px 18px;border:1.5px solid transparent}
+  .stat:nth-child(1){background:linear-gradient(135deg,#fff0f6,#ffe0ee);border-color:#ffcfe0}
+  .stat:nth-child(2){background:linear-gradient(135deg,#eef9ff,#dcf1fd);border-color:#c5e8fa}
+  .stat:nth-child(3){background:linear-gradient(135deg,#f5efff,#ede4ff);border-color:#ddccfa}
+  .stat .n{font-size:28px;font-weight:700;color:var(--ink)}
+  .stat:nth-child(1) .n{color:var(--pink-dark)}
+  .stat:nth-child(2) .n{color:#1e8fc4}
+  .stat:nth-child(3) .n{color:var(--purple-dark)}
+  .stat .l{font-size:13px;color:var(--muted)}
+
+  .toast{
+    position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);
+    background:linear-gradient(135deg,#ff7aab,#9d6bf0);color:#fff;padding:13px 24px;border-radius:999px;
+    font-family:'Prompt',sans-serif;font-weight:600;box-shadow:0 10px 30px rgba(157,107,240,.4);
+    opacity:0;pointer-events:none;transition:.25s;z-index:100;
+  }
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  .toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+
+  @media(max-width:640px){
+    body{font-size:16px}
+    .period-row{display:block}
+    .period-row .field{margin-bottom:10px}
+    .period-row .field:last-of-type{margin-bottom:0}
+    .period-row label{font-size:14px}
+    .period-row input,.period-row select{padding:12px 13px;font-size:16px}
+    .del-x{
+      width:100%;height:auto;background:var(--coral-soft);border:1.5px solid var(--coral-line);
+      border-radius:12px;color:#e23a63;font-size:0;font-weight:600;
+      padding:11px;margin-top:6px;line-height:1.4;
+    }
+    .del-x::after{content:'ลบคาบนี้';font-size:16px}
+    .tab{font-size:14px;padding:11px 4px}
+    .btn{padding:13px 20px}
+    .row > .field{min-width:100%}
+  }
+
+  /* Print */
+  @media print{
+    body{background:#fff;font-size:15px}
+    header,.tabs,.no-print,.toast{display:none!important}
+    .wrap{padding:0}
+    .card{box-shadow:none;border:none;padding:0}
+    #printArea{display:block!important}
+    .panel{display:none!important}
+  }
+  #printArea{display:none}
+  .print-head{text-align:center;margin-bottom:16px}
+  .print-head .print-school{font-family:'Prompt',sans-serif;font-size:18px;font-weight:700;color:#000;margin-bottom:2px}
+  .print-head h2{font-family:'Prompt',sans-serif;font-size:20px;color:#000;justify-content:center}
+  .print-head p{font-size:15px;color:#333}
+  #printArea table th{background:#ffe4ef!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .sign-row{display:flex;justify-content:space-around;margin-top:50px;font-size:15px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="brand">
+      <div class="logo">🔁</div>
+      <div>
+        <div class="school">โรงเรียนบ้านวังหรัง (ประสิทธิ์อุปถัมภ์)</div>
+        <h1>ระบบจัดครูสอนแทน</h1>
+        <p>บันทึกครูที่ไม่มาปฏิบัติงาน และจัดครูสอนแทนรายคาบ</p>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="tabs no-print">
+    <button class="tab active" data-tab="assign">📝 จัดสอนแทน</button>
+    <button class="tab" data-tab="teachers">👩‍🏫 ครู & วิชา</button>
+    <button class="tab" data-tab="history">📚 ประวัติ</button>
+  </div>
+
+  <!-- ===== ASSIGN ===== -->
+  <div class="panel active" id="panel-assign">
+    <div class="card">
+      <h2>บันทึกการสอนแทน</h2>
+      <div class="sub">กรอกครูที่ไม่มา แล้วเพิ่มคาบที่ต้องหาครูสอนแทน — ตัวเลขข้างชื่อครูคือจำนวนคาบที่ถูกจัดสอนแทน "ในวันนี้" ช่วยกระจายงานให้ทั่วถึง</div>
+
+      <div class="row">
+        <div class="field">
+          <label>วันที่</label>
+          <input type="date" id="a-date">
+        </div>
+        <div class="field">
+          <label>ครูที่ไม่มาปฏิบัติงาน</label>
+          <select id="a-absent"></select>
+        </div>
+        <div class="field">
+          <label>เหตุผล</label>
+          <select id="a-reason">
+            <option value="ลากิจ">ลากิจ</option>
+            <option value="ลาป่วย">ลาป่วย</option>
+            <option value="ไปราชการ">ไปราชการ</option>
+            <option value="อบรม/สัมมนา">อบรม/สัมมนา</option>
+            <option value="อื่นๆ">อื่นๆ</option>
+          </select>
+        </div>
+      </div>
+
+      <label style="margin-top:8px">คาบที่ต้องจัดสอนแทน</label>
+      <div class="period-list" id="a-periods"></div>
+      <button class="btn ghost sm" id="addPeriod">+ เพิ่มคาบ</button>
+
+      <div class="toolbar">
+        <button class="btn" id="saveRecord">💾 บันทึกการสอนแทน</button>
+        <button class="btn ghost" id="clearForm">ล้างฟอร์ม</button>
+      </div>
+    </div>
+
+    <!-- fairness overview today -->
+    <div class="card" id="fairCard" style="display:none">
+      <h2>ภาระสอนแทนของวันนี้</h2>
+      <div class="sub">รวมทุกบันทึกในวันเดียวกัน</div>
+      <div class="teacher-grid" id="fairGrid"></div>
+    </div>
+  </div>
+
+  <!-- ===== TEACHERS ===== -->
+  <div class="panel" id="panel-teachers">
+    <div class="card">
+      <h2>เพิ่มรายชื่อครู</h2>
+      <div class="sub">รายชื่อนี้จะปรากฏในช่องเลือกครูที่ไม่มา และครูสอนแทน</div>
+      <div class="row">
+        <div class="field" style="flex:2">
+          <label>ชื่อ–สกุล</label>
+          <input type="text" id="t-name" placeholder="เช่น นางสาวสมศรี ใจดี" onkeydown="if(event.key==='Enter')addTeacher()">
+        </div>
+        <div class="field" style="align-self:flex-end;flex:0">
+          <button class="btn" onclick="addTeacher()">+ เพิ่มครู</button>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <h2>รายชื่อครูทั้งหมด</h2>
+      <div class="sub" id="t-count"></div>
+      <div class="teacher-grid" id="teacherList"></div>
+    </div>
+
+    <div class="card">
+      <h2>เพิ่มรายวิชา</h2>
+      <div class="sub">รายวิชาที่เพิ่มไว้จะให้เลือกในช่อง "วิชา" ตอนจัดสอนแทน (ไม่ต้องพิมพ์)</div>
+      <div class="row">
+        <div class="field" style="flex:2">
+          <label>ชื่อวิชา</label>
+          <input type="text" id="s-name" placeholder="เช่น คณิตศาสตร์" onkeydown="if(event.key==='Enter')addSubject()">
+        </div>
+        <div class="field" style="align-self:flex-end;flex:0">
+          <button class="btn" onclick="addSubject()">+ เพิ่มวิชา</button>
+        </div>
+      </div>
+      <div class="sub" id="s-count" style="margin-top:6px;margin-bottom:10px"></div>
+      <div class="teacher-grid" id="subjectList"></div>
+    </div>
+  </div>
+
+  <!-- ===== HISTORY ===== -->
+  <div class="panel" id="panel-history">
+    <div class="card">
+      <h2>สรุปภาพรวม</h2>
+      <div class="stat-grid" id="statGrid"></div>
+      <div class="toolbar no-print">
+        <button class="btn amber" id="exportExcel">📊 ส่งออก Excel</button>
+      </div>
+    </div>
+    <div class="card">
+      <h2>ประวัติการจัดสอนแทน</h2>
+      <div class="sub">
+        <div class="row no-print">
+          <div class="field"><label>กรองตามวันที่</label><input type="date" id="filterDate"></div>
+          <div class="field" style="align-self:flex-end;flex:0">
+            <button class="btn ghost sm" onclick="document.getElementById('filterDate').value='';renderHistory()">แสดงทั้งหมด</button>
+          </div>
+        </div>
+      </div>
+      <div id="historyList"></div>
+    </div>
+  </div>
+</div>
+
+<!-- print area -->
+<div id="printArea"></div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ---------- storage ---------- */
+const DB = {
+  get k(){return 'subst_teacher_v1'},
+  load(){try{return JSON.parse(localStorage.getItem(this.k))||{teachers:[],records:[]}}catch(e){return {teachers:[],records:[]}}},
+  save(d){
+    try{
+      localStorage.setItem(this.k,JSON.stringify(d));
+      return true;
+    }catch(e){
+      alert('⚠️ บันทึกข้อมูลลงเครื่องไม่สำเร็จ\n\nสาเหตุที่พบบ่อย: กำลังเปิดผ่านเบราว์เซอร์ในแอป (เช่น LINE, Facebook) หรือโหมดไม่ระบุตัวตน\n\nวิธีแก้: แตะปุ่มเมนู (⋯) แล้วเลือก "เปิดในเบราว์เซอร์" (Chrome/Safari) ข้อมูลจะถูกเก็บถาวรตามปกติ');
+      return false;
+    }
+  }
+};
+let state = DB.load();
+
+const SCHOOL = 'โรงเรียนบ้านวังหรัง (ประสิทธิ์อุปถัมภ์)';
+const DEFAULT_SUBJECTS = ['ภาษาไทย','คณิตศาสตร์','วิทยาศาสตร์และเทคโนโลยี','สังคมศึกษา ศาสนาและวัฒนธรรม','ประวัติศาสตร์','สุขศึกษาและพลศึกษา','ศิลปะ','การงานอาชีพ','ภาษาอังกฤษ'];
+const REASON_CLASS = {'ลากิจ':'leave','ลาป่วย':'sick','ไปราชการ':'official','อบรม/สัมมนา':'train','อื่นๆ':'other'};
+const todayISO = ()=> new Date().toISOString().slice(0,10);
+function fmtThaiDate(iso){
+  if(!iso) return '';
+  const [y,m,d]=iso.split('-');
+  const months=['','มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+  return `${parseInt(d)} ${months[parseInt(m)]} ${parseInt(y)+543}`;
+}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200);}
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
+
+/* ---------- tabs ---------- */
+document.querySelectorAll('.tab').forEach(tab=>{
+  tab.onclick=()=>{
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('panel-'+tab.dataset.tab).classList.add('active');
+    if(tab.dataset.tab==='history') renderHistory();
+  };
+});
+
+/* ---------- teachers ---------- */
+function addTeacher(){
+  const inp=document.getElementById('t-name');
+  const name=inp.value.trim();
+  if(!name){toast('กรุณากรอกชื่อครู');return;}
+  if(state.teachers.some(t=>t.name===name)){toast('มีชื่อนี้อยู่แล้ว');return;}
+  state.teachers.push({id:uid(),name});
+  DB.save(state);
+  inp.value='';inp.focus();
+  renderTeachers();refreshSelects();
+  toast('เพิ่มครูแล้ว');
+}
+function deleteTeacher(id){
+  const t=state.teachers.find(x=>x.id===id);
+  if(!confirm('ลบ "'+t.name+'" ออกจากรายชื่อ?'))return;
+  state.teachers=state.teachers.filter(x=>x.id!==id);
+  DB.save(state);renderTeachers();refreshSelects();toast('ลบแล้ว');
+}
+function renderTeachers(){
+  const wrap=document.getElementById('teacherList');
+  document.getElementById('t-count').textContent='ทั้งหมด '+state.teachers.length+' คน';
+  if(!state.teachers.length){wrap.innerHTML='<div class="empty"><div class="big">👩‍🏫</div>ยังไม่มีรายชื่อครู เพิ่มด้านบนได้เลย</div>';return;}
+  wrap.innerHTML=state.teachers.map(t=>
+    `<div class="t-chip"><span>${esc(t.name)}</span><button onclick="deleteTeacher('${t.id}')" title="ลบ">×</button></div>`
+  ).join('');
+}
+function refreshSelects(){
+  const opts='<option value="">— เลือกครู —</option>'+state.teachers.map(t=>`<option>${esc(t.name)}</option>`).join('');
+  document.getElementById('a-absent').innerHTML=opts;
+  document.querySelectorAll('.sub-select').forEach(s=>{const v=s.value;s.innerHTML=opts;s.value=v;});
+}
+/* ---------- subjects ---------- */
+function addSubject(){
+  const inp=document.getElementById('s-name');
+  const name=inp.value.trim();
+  if(!name){toast('กรุณากรอกชื่อวิชา');return;}
+  if(state.subjects.includes(name)){toast('มีวิชานี้อยู่แล้ว');return;}
+  state.subjects.push(name);
+  DB.save(state);
+  inp.value='';inp.focus();
+  renderSubjects();refreshSubjectSelects();
+  toast('เพิ่มวิชาแล้ว');
+}
+function deleteSubject(idx){
+  const name=state.subjects[idx];
+  if(name===undefined)return;
+  if(!confirm('ลบวิชา "'+name+'"?'))return;
+  state.subjects.splice(idx,1);
+  DB.save(state);renderSubjects();refreshSubjectSelects();toast('ลบแล้ว');
+}
+function renderSubjects(){
+  const wrap=document.getElementById('subjectList');
+  document.getElementById('s-count').textContent='ทั้งหมด '+state.subjects.length+' วิชา';
+  if(!state.subjects.length){wrap.innerHTML='<div class="empty"><div class="big">📚</div>ยังไม่มีรายวิชา เพิ่มด้านบนได้เลย</div>';return;}
+  wrap.innerHTML=state.subjects.map((s,i)=>
+    `<div class="t-chip subj"><span>${esc(s)}</span><button onclick="deleteSubject(${i})" title="ลบ">×</button></div>`
+  ).join('');
+}
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+
+/* ---------- period rows ---------- */
+function periodRow(data={}){
+  const div=document.createElement('div');
+  div.className='period-row';
+  div.innerHTML=`
+    <div class="field p-num"><label>คาบ</label><input type="text" class="p-period" value="${data.period||''}" placeholder="1"></div>
+    <div class="field"><label>ชั้น</label><input type="text" class="p-class" value="${data.cls||''}" placeholder="ป.4/1"></div>
+    <div class="field"><label>วิชา</label><select class="p-subject subj-select"></select></div>
+    <div class="field"><label>ครูสอนแทน</label><select class="p-sub sub-select"></select></div>
+    <button class="del-x p-del" title="ลบคาบ">×</button>`;
+  div.querySelector('.del-x').onclick=()=>{div.remove();updateFairness();};
+  document.getElementById('a-periods').appendChild(div);
+  const sel=div.querySelector('.sub-select');
+  sel.innerHTML='<option value="">— เลือกครู —</option>'+state.teachers.map(t=>`<option>${esc(t.name)}</option>`).join('');
+  if(data.sub) sel.value=data.sub;
+  sel.onchange=updateFairness;
+  const subj=div.querySelector('.subj-select');
+  subj.innerHTML=subjectOptions();
+  if(data.subject){
+    if(!state.subjects.includes(data.subject)){
+      subj.insertAdjacentHTML('afterbegin',`<option>${esc(data.subject)}</option>`);
+    }
+    subj.value=data.subject;
+  }
+  subj.onchange=()=>{
+    if(subj.value==='__add__'){
+      const name=(prompt('พิมพ์ชื่อวิชาใหม่')||'').trim();
+      if(name){
+        if(!state.subjects.includes(name)){state.subjects.push(name);DB.save(state);renderSubjects();refreshSubjectSelects();}
+        subj.value=name;
+      }else{
+        subj.value='';
+      }
+    }
+  };
+}
+function subjectOptions(){
+  return '<option value="">— เลือกวิชา —</option>'
+    +(state.subjects||[]).map(s=>`<option>${esc(s)}</option>`).join('')
+    +'<option value="__add__">➕ เพิ่มวิชาใหม่…</option>';
+}
+function refreshSubjectSelects(){
+  document.querySelectorAll('.subj-select').forEach(s=>{
+    const v=s.value; s.innerHTML=subjectOptions();
+    if(v!=='__add__') s.value=v;
+  });
+}
+document.getElementById('addPeriod').onclick=()=>periodRow();
+
+/* ---------- fairness (today) ---------- */
+function updateFairness(){
+  const date=document.getElementById('a-date').value;
+  const counts={};
+  // from saved records same date
+  state.records.filter(r=>r.date===date).forEach(r=>{
+    r.periods.forEach(p=>{if(p.sub)counts[p.sub]=(counts[p.sub]||0)+1;});
+  });
+  // from current unsaved form
+  document.querySelectorAll('#a-periods .sub-select').forEach(s=>{
+    if(s.value)counts[s.value]=(counts[s.value]||0)+1;
+  });
+  const grid=document.getElementById('fairGrid');
+  const entries=Object.entries(counts).sort((a,b)=>b[1]-a[1]);
+  if(!entries.length){document.getElementById('fairCard').style.display='none';return;}
+  document.getElementById('fairCard').style.display='block';
+  grid.innerHTML=entries.map(([name,n])=>
+    `<div class="t-chip"><span>${esc(name)}</span><span class="cnt">${n}</span></div>`
+  ).join('');
+}
+
+/* ---------- save record ---------- */
+document.getElementById('saveRecord').onclick=()=>{
+  const date=document.getElementById('a-date').value;
+  const absent=document.getElementById('a-absent').value;
+  const reason=document.getElementById('a-reason').value;
+  if(!date){toast('เลือกวันที่');return;}
+  if(!absent){toast('เลือกครูที่ไม่มา');return;}
+  const periods=[];
+  let incomplete=false;
+  document.querySelectorAll('#a-periods .period-row').forEach(row=>{
+    const period=row.querySelector('.p-period').value.trim();
+    const cls=row.querySelector('.p-class').value.trim();
+    let subject=row.querySelector('.p-subject').value.trim();
+    if(subject==='__add__') subject='';
+    const sub=row.querySelector('.p-sub').value;
+    if(period||cls||subject||sub){
+      periods.push({period,cls,subject,sub});
+      if(!sub) incomplete=true;
+    }
+  });
+  if(!periods.length){toast('เพิ่มอย่างน้อย 1 คาบ');return;}
+  if(incomplete && !confirm('บางคาบยังไม่ได้เลือกครูสอนแทน บันทึกต่อไหม?'))return;
+  // เก็บวิชาที่พิมพ์ใหม่เข้าคลังให้เลือกได้ครั้งหน้า
+  let newSubj=false;
+  periods.forEach(p=>{
+    if(p.subject && !state.subjects.includes(p.subject)){state.subjects.push(p.subject);newSubj=true;}
+  });
+  state.records.push({id:uid(),date,absent,reason,periods,created:Date.now()});
+  DB.save(state);
+  if(newSubj){renderSubjects();refreshSubjectSelects();}
+  toast('บันทึกเรียบร้อย ✓');
+  clearForm();
+  updateFairness();
+};
+function clearForm(){
+  document.getElementById('a-date').value=todayISO();
+  document.getElementById('a-absent').value='';
+  document.getElementById('a-reason').value='ลากิจ';
+  document.getElementById('a-periods').innerHTML='';
+  periodRow();
+  updateFairness();
+}
+document.getElementById('clearForm').onclick=clearForm;
+
+/* ---------- history ---------- */
+function renderHistory(){
+  // stats
+  const totalRec=state.records.length;
+  const totalPeriods=state.records.reduce((s,r)=>s+r.periods.length,0);
+  const subCount={};
+  state.records.forEach(r=>r.periods.forEach(p=>{if(p.sub)subCount[p.sub]=(subCount[p.sub]||0)+1;}));
+  const topSub=Object.entries(subCount).sort((a,b)=>b[1]-a[1])[0];
+  document.getElementById('statGrid').innerHTML=`
+    <div class="stat"><div class="n">${totalRec}</div><div class="l">ครั้งที่จัดสอนแทน</div></div>
+    <div class="stat"><div class="n">${totalPeriods}</div><div class="l">คาบสอนแทนรวม</div></div>
+    <div class="stat"><div class="n">${topSub?esc(topSub[0].split(' ').slice(-1)[0]):'-'}</div><div class="l">สอนแทนมากสุด ${topSub?'('+topSub[1]+' คาบ)':''}</div></div>`;
+
+  const filter=document.getElementById('filterDate').value;
+  let recs=[...state.records].sort((a,b)=>b.created-a.created);
+  if(filter) recs=recs.filter(r=>r.date===filter);
+  const wrap=document.getElementById('historyList');
+  if(!recs.length){wrap.innerHTML='<div class="empty"><div class="big">📚</div>ยังไม่มีประวัติการจัดสอนแทน</div>';return;}
+  wrap.innerHTML=recs.map(r=>{
+    const rows=r.periods.map(p=>`<tr>
+      <td class="center">${esc(p.period)||'-'}</td>
+      <td>${esc(p.cls)||'-'}</td>
+      <td>${esc(p.subject)||'-'}</td>
+      <td>${p.sub?esc(p.sub):'<span style="color:#b0392e">ยังไม่จัด</span>'}</td></tr>`).join('');
+    const cls=REASON_CLASS[r.reason]||'other';
+    return `<div class="hist-item">
+      <div class="hist-head">
+        <div>
+          <div class="date">📅 ${fmtThaiDate(r.date)}</div>
+          <div class="who">ครูที่ไม่มา: <b>${esc(r.absent)}</b> <span class="pill ${cls}">${esc(r.reason)}</span></div>
+        </div>
+        <div class="no-print" style="display:flex;gap:6px">
+          <button class="btn ghost sm" onclick="printRecord('${r.id}')">🖨️ พิมพ์</button>
+          <button class="btn danger sm" onclick="deleteRecord('${r.id}')">ลบ</button>
+        </div>
+      </div>
+      <table><thead><tr><th class="center">คาบ</th><th>ชั้น</th><th>วิชา</th><th>ครูสอนแทน</th></tr></thead>
+      <tbody>${rows}</tbody></table>
+    </div>`;
+  }).join('');
+}
+function deleteRecord(id){
+  if(!confirm('ลบบันทึกนี้?'))return;
+  state.records=state.records.filter(r=>r.id!==id);
+  DB.save(state);renderHistory();toast('ลบแล้ว');
+}
+document.getElementById('filterDate').onchange=renderHistory;
+
+/* ---------- print ---------- */
+function printRecord(id){
+  const r=state.records.find(x=>x.id===id);
+  if(!r)return;
+  const rows=r.periods.map((p,i)=>`<tr>
+    <td class="center">${i+1}</td>
+    <td class="center">${esc(p.period)||'-'}</td>
+    <td>${esc(p.cls)||'-'}</td>
+    <td>${esc(p.subject)||'-'}</td>
+    <td>${esc(p.sub)||'-'}</td></tr>`).join('');
+  document.getElementById('printArea').innerHTML=`
+    <div class="print-head">
+      <div class="print-school">${SCHOOL}</div>
+      <h2>บันทึกการจัดครูสอนแทน</h2>
+      <p>วันที่ ${fmtThaiDate(r.date)}</p>
+      <p>ครูที่ไม่มาปฏิบัติงาน: ${esc(r.absent)} &nbsp;•&nbsp; เหตุผล: ${esc(r.reason)}</p>
+    </div>
+    <table>
+      <thead><tr><th class="center">ที่</th><th class="center">คาบ</th><th>ชั้น</th><th>วิชา</th><th>ครูผู้สอนแทน</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+    <div class="sign-row">
+      <div>ลงชื่อ..............................................<br>(............................................)<br>ครูฝ่ายวิชาการ</div>
+      <div>ลงชื่อ..............................................<br>(............................................)<br>ผู้อำนวยการโรงเรียน</div>
+    </div>`;
+  window.print();
+}
+
+/* ---------- export excel ---------- */
+function loadXLSX(){
+  return new Promise((resolve,reject)=>{
+    if(window.XLSX)return resolve();
+    const s=document.createElement('script');
+    s.src='https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+    s.onload=()=>resolve();
+    s.onerror=()=>reject(new Error('โหลดไลบรารีไม่สำเร็จ'));
+    document.head.appendChild(s);
+  });
+}
+document.getElementById('exportExcel').onclick=async ()=>{
+  if(!state.records.length){toast('ยังไม่มีข้อมูลให้ส่งออก');return;}
+  const btn=document.getElementById('exportExcel');
+  const old=btn.textContent;btn.textContent='⏳ กำลังสร้างไฟล์...';btn.disabled=true;
+  try{
+    await loadXLSX();
+    const recs=[...state.records].sort((a,b)=>a.date.localeCompare(b.date)||a.created-b.created);
+
+    // Sheet 1: รายละเอียด (1 คาบ = 1 แถว)
+    const detail=[['ลำดับ','วันที่','ครูที่ไม่มาปฏิบัติงาน','เหตุผล','คาบ','ชั้น','วิชา','ครูผู้สอนแทน']];
+    let n=0;
+    recs.forEach(r=>r.periods.forEach(p=>{
+      n++;
+      detail.push([n,fmtThaiDate(r.date),r.absent,r.reason,p.period||'',p.cls||'',p.subject||'',p.sub||'ยังไม่จัด']);
+    }));
+
+    // Sheet 2: สรุปครูสอนแทน
+    const subCount={};
+    recs.forEach(r=>r.periods.forEach(p=>{if(p.sub)subCount[p.sub]=(subCount[p.sub]||0)+1;}));
+    const subRows=[['ครูผู้สอนแทน','จำนวนคาบที่สอนแทน']];
+    Object.entries(subCount).sort((a,b)=>b[1]-a[1]).forEach(([name,c])=>subRows.push([name,c]));
+
+    // Sheet 3: สรุปการไม่มาปฏิบัติงาน (แยกตามเหตุผล)
+    const reasons=['ลากิจ','ลาป่วย','ไปราชการ','อบรม/สัมมนา','อื่นๆ'];
+    const absMap={};
+    recs.forEach(r=>{
+      if(!absMap[r.absent])absMap[r.absent]={total:0};
+      absMap[r.absent].total++;
+      absMap[r.absent][r.reason]=(absMap[r.absent][r.reason]||0)+1;
+    });
+    const absRows=[['ครู','รวมครั้ง',...reasons]];
+    Object.entries(absMap).sort((a,b)=>b[1].total-a[1].total).forEach(([name,d])=>{
+      absRows.push([name,d.total,...reasons.map(rs=>d[rs]||0)]);
+    });
+
+    const titledSheet=(rows,subtitle,ncol)=>{
+      const ws=XLSX.utils.aoa_to_sheet([[SCHOOL],[subtitle],[],...rows]);
+      ws['!merges']=[{s:{r:0,c:0},e:{r:0,c:ncol-1}},{s:{r:1,c:0},e:{r:1,c:ncol-1}}];
+      return ws;
+    };
+    const wb=XLSX.utils.book_new();
+    const ws1=titledSheet(detail,'รายงานการจัดครูสอนแทน (รายละเอียด)',8);
+    ws1['!cols']=[{wch:6},{wch:22},{wch:26},{wch:14},{wch:6},{wch:12},{wch:18},{wch:26}];
+    const ws2=titledSheet(subRows,'สรุปคาบสอนแทนต่อครู',2);
+    ws2['!cols']=[{wch:28},{wch:20}];
+    const ws3=titledSheet(absRows,'สรุปการไม่มาปฏิบัติงาน',2+reasons.length);
+    ws3['!cols']=[{wch:26},{wch:10},...reasons.map(()=>({wch:12}))];
+    XLSX.utils.book_append_sheet(wb,ws1,'รายละเอียด');
+    XLSX.utils.book_append_sheet(wb,ws2,'สรุปครูสอนแทน');
+    XLSX.utils.book_append_sheet(wb,ws3,'สรุปการไม่มา');
+
+    XLSX.writeFile(wb,'รายงานการจัดครูสอนแทน_'+todayISO()+'.xlsx');
+    toast('ส่งออก Excel เรียบร้อย ✓');
+  }catch(e){
+    alert('ส่งออกไม่สำเร็จ: '+e.message+'\n\nกรุณาตรวจสอบว่ามีอินเทอร์เน็ต แล้วลองใหม่');
+  }finally{
+    btn.textContent=old;btn.disabled=false;
+  }
+};
+
+/* ---------- init ---------- */
+if(!Array.isArray(state.subjects)){ state.subjects = DEFAULT_SUBJECTS.slice(); DB.save(state); }
+document.getElementById('a-date').value=todayISO();
+document.getElementById('a-date').onchange=updateFairness;
+renderTeachers();
+renderSubjects();
+refreshSubjectSelects();
+refreshSelects();
+periodRow();
+</script>
+</body>
+</html>
