@@ -1,0 +1,775 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ปฏิทินวิชาการ ปีการศึกษา 2569 — โรงเรียนบ้านวังหรัง (ประสิทธิ์อุปถัมภ์)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mitr:wght@300;400;500;600;700&family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --violet:#7c3aed;
+    --violet-2:#a855f7;
+    --pink:#ec4899;
+    --ink:#3b2a5a;
+    --text:#2f2a3a;
+    --muted:#8b86a0;
+    --line:#efe9fb;
+    --card:#ffffff;
+
+    --c-holiday:#fb7185;   /* 🌴 */
+    --c-religious:#f59e0b; /* 🙏 */
+    --c-exam:#8b5cf6;      /* 📝 */
+    --c-activity:#10b981;  /* 🎉 */
+    --c-submit:#ec4899;    /* 📤 */
+    --c-meeting:#38bdf8;   /* 👥 */
+
+    --radius:22px;
+    --shadow:0 10px 34px rgba(124,58,237,.10);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'Sarabun',sans-serif;color:var(--text);line-height:1.5;-webkit-font-smoothing:antialiased;
+    background:
+      radial-gradient(circle at 8% 0%, #fce7f3 0%, transparent 42%),
+      radial-gradient(circle at 100% 5%, #dbeafe 0%, transparent 40%),
+      radial-gradient(circle at 50% 100%, #e0f7ef 0%, transparent 45%),
+      #f7f3ff;
+    min-height:100vh;
+  }
+  h1,h2,h3,.display{font-family:'Mitr',sans-serif;font-weight:600;}
+  button{font-family:inherit;cursor:pointer;border:none;background:none;}
+  .wrap{max-width:1180px;margin:0 auto;padding:22px 16px 70px;}
+
+  /* Hero */
+  .hero{
+    background:linear-gradient(120deg,#7c3aed 0%,#c026d3 55%,#f97316 120%);
+    border-radius:26px;padding:26px 30px;color:#fff;position:relative;overflow:hidden;
+    box-shadow:0 16px 40px rgba(124,58,237,.28);
+  }
+  .hero::before{content:"";position:absolute;right:-30px;bottom:-60px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.14);}
+  .hero::after{content:"";position:absolute;right:90px;top:-50px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.10);}
+  .hero .row{display:flex;align-items:center;gap:14px;position:relative;z-index:1;flex-wrap:wrap;}
+  .hero .emoji{font-size:2.6rem;filter:drop-shadow(0 3px 6px rgba(0,0,0,.15));}
+  .hero h1{margin:0;font-size:1.8rem;font-weight:700;line-height:1.1;}
+  .hero .school{margin-top:4px;font-size:1rem;color:#f4e8ff;font-weight:400;}
+
+  /* Toolbar */
+  .toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin:20px 0 16px;}
+  .month-nav{display:flex;align-items:center;gap:6px;background:#fff;border-radius:999px;padding:5px;box-shadow:var(--shadow);}
+  .nav-btn{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;color:var(--violet);font-size:1.4rem;transition:.15s;}
+  .nav-btn:hover{background:#f3ebff;transform:scale(1.05);}
+  .month-title{font-family:'Mitr',sans-serif;font-weight:500;font-size:1.15rem;color:var(--ink);min-width:200px;text-align:center;}
+  .today-btn{background:#fff;border-radius:999px;padding:10px 18px;color:var(--violet);font-family:'Mitr',sans-serif;font-weight:500;box-shadow:var(--shadow);transition:.15s;}
+  .today-btn:hover{background:#f3ebff;}
+  .spacer{flex:1;}
+  .btn-primary{background:linear-gradient(135deg,var(--violet),var(--pink));color:#fff;border-radius:999px;padding:11px 20px;
+    font-family:'Mitr',sans-serif;font-weight:500;box-shadow:0 6px 16px rgba(236,72,153,.32);transition:.15s;display:flex;align-items:center;gap:7px;}
+  .btn-primary:hover{transform:translateY(-2px);filter:brightness(1.05);}
+  .btn-soft{background:#fff;color:var(--violet);border-radius:999px;padding:10px 15px;font-weight:500;box-shadow:var(--shadow);transition:.15s;}
+  .btn-soft:hover{background:#faf5ff;}
+
+  /* Layout */
+  .layout{display:grid;grid-template-columns:1fr 320px;gap:18px;align-items:start;}
+  @media (max-width:900px){.layout{grid-template-columns:1fr;}}
+
+  /* Calendar */
+  .calendar{background:var(--card);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);}
+  .dow{display:grid;grid-template-columns:repeat(7,1fr);background:linear-gradient(135deg,var(--violet),var(--violet-2));}
+  .dow div{padding:12px 4px;text-align:center;color:#fff;font-family:'Mitr',sans-serif;font-weight:400;font-size:.92rem;}
+  .dow div.wknd{color:#ffe08a;}
+  .grid{display:grid;grid-template-columns:repeat(7,1fr);}
+  .cell{min-height:120px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:6px 6px 8px;position:relative;transition:.12s;overflow:hidden;}
+  .cell:nth-child(7n){border-right:none;}
+  .cell.out{background:#faf7ff;}
+  .cell:not(.out){cursor:pointer;}
+  .cell:not(.out):hover{background:#fbf5ff;}
+  .cell .dnum{font-family:'Mitr',sans-serif;font-weight:500;font-size:.95rem;color:var(--text);width:30px;height:30px;display:grid;place-items:center;border-radius:50%;}
+  .cell.out .dnum{color:#cfc9dd;}
+  .cell.wknd .dnum{color:var(--c-holiday);}
+  .cell.today .dnum{background:linear-gradient(135deg,var(--violet),var(--pink));color:#fff;font-weight:600;box-shadow:0 4px 12px rgba(236,72,153,.4);}
+  .cell .add-hint{position:absolute;top:8px;right:8px;width:24px;height:24px;border-radius:50%;background:#f3ebff;color:var(--violet);display:none;place-items:center;font-size:1.1rem;line-height:1;}
+  .cell:not(.out):hover .add-hint{display:grid;}
+  .pills{margin-top:3px;display:flex;flex-direction:column;gap:3px;}
+  .pill{font-size:.76rem;line-height:1.3;padding:2px 8px;border-radius:8px;color:#fff;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;}
+  .pill:hover{filter:brightness(1.07);}
+  .more{font-size:.72rem;color:var(--muted);padding-left:3px;font-weight:500;}
+
+  /* Sidebar */
+  .side{display:flex;flex-direction:column;gap:16px;}
+  .panel{background:var(--card);border-radius:var(--radius);padding:16px 16px 18px;box-shadow:var(--shadow);}
+  .panel h3{margin:0 0 12px;font-size:1.05rem;color:var(--ink);display:flex;align-items:center;gap:8px;}
+  .legend-item{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:12px;cursor:pointer;transition:.12s;user-select:none;}
+  .legend-item:hover{background:#faf5ff;}
+  .legend-item.off{opacity:.4;}
+  .legend-item .em{font-size:1.15rem;}
+  .dot{width:12px;height:12px;border-radius:50%;flex-shrink:0;}
+  .legend-item .cnt{margin-left:auto;font-size:.82rem;color:var(--violet);background:#f3ebff;border-radius:999px;padding:2px 10px;font-weight:500;}
+  .up-item{display:flex;gap:11px;padding:10px 8px;border-radius:12px;cursor:pointer;transition:.12s;align-items:flex-start;}
+  .up-item:hover{background:#faf5ff;}
+  .up-date{flex-shrink:0;text-align:center;width:48px;background:#f3ebff;border-radius:12px;padding:6px 0;}
+  .up-date .d{font-family:'Mitr',sans-serif;font-weight:600;font-size:1.2rem;color:var(--violet);line-height:1;}
+  .up-date .m{font-size:.7rem;color:var(--muted);}
+  .up-body{flex:1;min-width:0;}
+  .up-title{font-weight:500;font-size:.92rem;color:var(--text);}
+  .up-cat{font-size:.78rem;font-weight:500;margin-top:1px;display:flex;align-items:center;gap:4px;}
+  .up-empty{color:var(--muted);font-size:.9rem;text-align:center;padding:14px 0;}
+
+  /* Modal */
+  .overlay{position:fixed;inset:0;background:rgba(59,42,90,.5);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;padding:16px;z-index:60;}
+  .overlay.show{display:flex;}
+  .modal{background:#fff;border-radius:24px;width:100%;max-width:500px;box-shadow:0 24px 70px rgba(0,0,0,.3);max-height:92vh;overflow:auto;}
+  .modal-head{background:linear-gradient(120deg,var(--violet),var(--pink));color:#fff;padding:18px 24px;border-radius:24px 24px 0 0;display:flex;justify-content:space-between;align-items:center;}
+  .modal-head h3{margin:0;color:#fff;font-size:1.2rem;display:flex;align-items:center;gap:8px;}
+  .modal-head .x{color:#fff;font-size:1.7rem;line-height:1;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;}
+  .modal-head .x:hover{background:rgba(255,255,255,.18);}
+  .modal-body{padding:22px 24px 6px;}
+  .field{margin-bottom:15px;}
+  .field label{display:block;font-family:'Mitr',sans-serif;font-weight:400;font-size:.9rem;color:var(--ink);margin-bottom:6px;}
+  .field input,.field textarea{width:100%;background:#faf7ff;border:1.5px solid var(--line);border-radius:12px;padding:11px 13px;font-family:inherit;font-size:.95rem;color:var(--text);transition:.15s;}
+  .field input:focus,.field textarea:focus{outline:none;border-color:var(--violet-2);box-shadow:0 0 0 3px rgba(168,85,247,.15);}
+  .field textarea{resize:vertical;min-height:56px;}
+  .g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  @media (max-width:480px){.g2{grid-template-columns:1fr;}}
+  .cat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+  .cat-opt{display:flex;align-items:center;gap:8px;border:1.5px solid var(--line);border-radius:12px;padding:9px 11px;cursor:pointer;font-size:.9rem;transition:.12s;background:#faf7ff;}
+  .cat-opt:hover{border-color:var(--violet-2);}
+  .cat-opt.sel{border-color:var(--violet);background:#f5eeff;box-shadow:0 0 0 2px rgba(124,58,237,.15);}
+  .cat-opt .em{font-size:1.1rem;}
+  .err{color:var(--c-holiday);font-size:.85rem;margin:-6px 0 12px;display:none;font-weight:500;}
+  .modal-foot{padding:14px 24px 24px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;}
+  .modal-foot .del{color:var(--c-holiday);font-weight:500;padding:10px 6px;}
+  .modal-foot .del:hover{text-decoration:underline;}
+  .modal-foot .grow{flex:1;}
+  .btn-cancel{border:1.5px solid var(--line);border-radius:12px;padding:11px 20px;color:var(--muted);font-weight:500;background:#fff;}
+  .btn-save{background:linear-gradient(135deg,var(--violet),var(--pink));color:#fff;border-radius:12px;padding:11px 24px;font-family:'Mitr',sans-serif;font-weight:500;box-shadow:0 6px 16px rgba(236,72,153,.3);}
+  .btn-save:hover{filter:brightness(1.05);}
+
+  .toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(30px);opacity:0;background:var(--ink);color:#fff;padding:12px 22px;border-radius:999px;font-weight:500;box-shadow:0 10px 30px rgba(0,0,0,.25);transition:.3s;z-index:80;pointer-events:none;}
+  .toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
+
+  .foot-note{margin-top:26px;text-align:center;color:var(--muted);font-size:.82rem;}
+  .foot-note b{color:var(--ink);font-weight:500;}
+
+  /* Day sheet list */
+  .day-ev{display:flex;align-items:center;gap:11px;padding:12px 8px;border-radius:12px;cursor:pointer;transition:.12s;border-bottom:1px solid var(--line);}
+  .day-ev:last-child{border-bottom:none;}
+  .day-ev:active,.day-ev:hover{background:#faf5ff;}
+  .day-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0;}
+  .day-ev-body{flex:1;min-width:0;}
+  .day-ev-title{font-weight:500;color:var(--text);}
+  .day-ev-cat{font-size:.8rem;margin-top:1px;}
+  .day-ev-edit{opacity:.45;font-size:.95rem;}
+
+  /* ===== Mobile ===== */
+  @media (max-width:640px){
+    .wrap{padding:14px 10px 60px;}
+    .hero{padding:20px 18px;border-radius:20px;}
+    .hero h1{font-size:1.3rem;}
+    .hero .emoji{font-size:2rem;}
+    .hero .school{font-size:.84rem;}
+    .toolbar{gap:8px;margin:16px 0 14px;}
+    .month-nav{flex:1 1 100%;justify-content:space-between;order:-1;}
+    .month-title{min-width:0;flex:1;font-size:1.08rem;}
+    .today-btn,.btn-soft,.btn-primary{padding:10px 13px;font-size:1.05rem;}
+    .lbl{display:none;}
+    .spacer{display:none;}
+    .dow div{font-size:.8rem;padding:9px 2px;}
+    .cell{min-height:62px;padding:4px 3px 6px;}
+    .cell .dnum{width:24px;height:24px;font-size:.85rem;}
+    .cell .add-hint{display:none!important;}
+    .pills{flex-direction:row;flex-wrap:wrap;gap:4px;margin-top:3px;justify-content:center;}
+    .pill{width:9px;height:9px;min-width:9px;padding:0;border-radius:50%;font-size:0;line-height:0;overflow:hidden;pointer-events:none;}
+    .more{font-size:.62rem;width:100%;text-align:center;padding-left:0;}
+    .modal-foot{padding:14px 16px 18px;gap:8px;}
+    .modal-foot .grow{display:none;}
+    .modal-foot .btn-cancel{flex:1 1 40%;padding:13px 10px;text-align:center;}
+    .modal-foot .btn-save{flex:1 1 55%;padding:13px 10px;text-align:center;}
+    .modal-foot .del{order:5;width:100%;text-align:center;background:#fff0f2;border-radius:12px;padding:12px;margin-top:2px;}
+    .modal{max-width:100%;}
+    .modal-body{padding:18px 18px 6px;}
+    .g2{grid-template-columns:1fr 1fr;}
+  }
+
+  @media print{
+    body{background:#fff;}
+    .toolbar,.side,.foot-note,.hero::before,.hero::after{display:none!important;}
+    .layout{grid-template-columns:1fr;}
+    .hero{background:#fff;color:#000;box-shadow:none;border:1px solid #999;}
+    .hero h1,.hero .school{color:#000;}
+    .calendar{box-shadow:none;border:1px solid #ccc;}
+  }
+  /* cloud status bar */
+  .cloudbar{display:flex;align-items:center;gap:8px;justify-content:center;margin:-6px 0 14px;font-size:.85rem;font-weight:500;}
+  .cloudbar .pill{border-radius:999px;padding:5px 14px;display:inline-flex;align-items:center;gap:6px;}
+  .cloudbar .ok{background:#e7f8ef;color:#0f9d58;}
+  .cloudbar .local{background:#fff4e5;color:#c07a12;}
+  .cloudbar .err{background:#ffe9ec;color:#d63a4a;}
+</style>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <div class="row">
+      <span class="emoji">📅</span>
+      <div>
+        <h1>ปฏิทินวิชาการ ปีการศึกษา ๒๕๖๙</h1>
+        <div class="school">🏫 โรงเรียนบ้านวังหรัง (ประสิทธิ์อุปถัมภ์) · สพป.สงขลา เขต ๒</div>
+      </div>
+    </div>
+  </header>
+
+  <div class="toolbar">
+    <div class="month-nav">
+      <button class="nav-btn" id="prev" aria-label="เดือนก่อนหน้า">‹</button>
+      <span class="month-title" id="monthTitle">—</span>
+      <button class="nav-btn" id="next" aria-label="เดือนถัดไป">›</button>
+    </div>
+    <button class="today-btn" id="todayBtn">📍<span class="lbl"> วันนี้</span></button>
+    <div class="spacer"></div>
+    <button class="btn-soft" id="printBtn">🖨️<span class="lbl"> พิมพ์</span></button>
+    <button class="btn-soft" id="exportBtn">⬇️<span class="lbl"> สำรอง</span></button>
+    <button class="btn-soft" id="importBtn">⬆️<span class="lbl"> กู้คืน</span></button>
+    <input type="file" id="importFile" accept="application/json" style="display:none">
+    <button class="btn-primary" id="addBtn">➕<span class="lbl"> เพิ่มกิจกรรม</span></button>
+  </div>
+
+  <div class="cloudbar" id="cloudbar"></div>
+
+  <div class="layout">
+    <main class="calendar">
+      <div class="dow" id="dow"></div>
+      <div class="grid" id="grid"></div>
+    </main>
+
+    <aside class="side">
+      <div class="panel">
+        <h3>🎨 ประเภทกิจกรรม</h3>
+        <div id="legend"></div>
+      </div>
+      <div class="panel">
+        <h3>⏰ กิจกรรมที่จะถึง</h3>
+        <div id="upcoming"></div>
+      </div>
+    </aside>
+  </div>
+
+  <div class="foot-note">
+    💾 ข้อมูลถูกบันทึกในเบราว์เซอร์เครื่องนี้อัตโนมัติ · แตะวันที่เพื่อเพิ่มกิจกรรม · แตะกิจกรรมเพื่อแก้ไข/ลบ<br>
+    <b>โรงเรียนบ้านวังหรัง (ประสิทธิ์อุปถัมภ์)</b>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="overlay" id="overlay">
+  <div class="modal" role="dialog" aria-modal="true">
+    <div class="modal-head">
+      <h3 id="modalTitle">✏️ เพิ่มกิจกรรม</h3>
+      <button class="x" id="closeModal" aria-label="ปิด">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="field">
+        <label>📌 ชื่อกิจกรรม / วันสำคัญ</label>
+        <input type="text" id="fTitle" placeholder="เช่น พิธีไหว้ครู, สอบกลางภาค, ส่งแผนการสอน">
+      </div>
+      <div class="err" id="fErr">กรุณากรอกชื่อกิจกรรมและวันที่</div>
+      <div class="field">
+        <label>🎨 ประเภท</label>
+        <div class="cat-grid" id="catGrid"></div>
+      </div>
+      <div class="g2">
+        <div class="field">
+          <label>📆 วันที่เริ่ม</label>
+          <input type="date" id="fStart">
+        </div>
+        <div class="field">
+          <label>📆 ถึงวันที่ (ถ้ามี)</label>
+          <input type="date" id="fEnd">
+        </div>
+      </div>
+      <div class="field">
+        <label>📝 หมายเหตุ</label>
+        <textarea id="fNote" placeholder="รายละเอียดเพิ่มเติม (ไม่บังคับ)"></textarea>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="del" id="delBtn" style="display:none;">🗑️ ลบกิจกรรมนี้</button>
+      <div class="grow"></div>
+      <button class="btn-cancel" id="cancelBtn">ยกเลิก</button>
+      <button class="btn-save" id="saveBtn">💾 บันทึก</button>
+    </div>
+  </div>
+</div>
+
+<!-- Day sheet -->
+<div class="overlay" id="dayOverlay">
+  <div class="modal" role="dialog" aria-modal="true">
+    <div class="modal-head">
+      <h3 id="daySheetTitle">📆 วันที่</h3>
+      <button class="x" id="closeDay" aria-label="ปิด">×</button>
+    </div>
+    <div class="modal-body">
+      <div id="dayList"></div>
+    </div>
+    <div class="modal-foot">
+      <div class="grow"></div>
+      <button class="btn-save" id="dayAddBtn">➕ เพิ่มกิจกรรมวันนี้</button>
+    </div>
+  </div>
+</div>
+
+<!-- Setup Firebase -->
+<div class="overlay" id="setupOverlay">
+  <div class="modal" role="dialog" aria-modal="true">
+    <div class="modal-head">
+      <h3>☁️ ตั้งค่าฐานข้อมูลกลาง</h3>
+      <button class="x" id="closeSetup" aria-label="ปิด">×</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:.9rem;color:var(--muted);margin-top:0;">วางค่า <b>firebaseConfig</b> ที่คัดลอกมาจาก Firebase Console ทั้งก้อน แล้วกดบันทึก (ทำครั้งเดียวต่อเครื่อง)</p>
+      <div class="field">
+        <textarea id="setupText" style="min-height:160px;font-family:monospace;font-size:.82rem;" placeholder='const firebaseConfig = {
+  apiKey: "AIza...",
+  authDomain: "xxx.firebaseapp.com",
+  projectId: "xxx",
+  storageBucket: "xxx.appspot.com",
+  messagingSenderId: "123...",
+  appId: "1:123:web:abc..."
+};'></textarea>
+      </div>
+      <div class="err" id="setupErr">อ่านค่า config ไม่ได้ — ตรวจสอบว่าวางครบทั้งก้อน (ต้องมี apiKey และ projectId)</div>
+    </div>
+    <div class="modal-foot">
+      <div class="grow"></div>
+      <button class="btn-cancel" id="cancelSetup">ยกเลิก</button>
+      <button class="btn-save" id="saveSetup">💾 บันทึกและเชื่อมต่อ</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  "use strict";
+
+  var STORE_KEY="acadCalBright2569_wangrang_v1";
+  var mem={};
+  function read(k){ try{return localStorage.getItem(k);}catch(e){return (k in mem)?mem[k]:null;} }
+  function write(k,v){ try{localStorage.setItem(k,v);}catch(e){mem[k]=v;} }
+
+  /* ============================================================
+     🔧 ตั้งค่า Firebase ตรงนี้ (วางค่าที่คัดลอกมาจาก Firebase Console)
+     ถ้ายังไม่ใส่ แอปจะทำงานแบบเฉพาะเครื่องนี้ (localStorage) ไปก่อน
+     ============================================================ */
+  var FIREBASE_CONFIG = {
+    apiKey: "AIzaSyBPowe-8QF6H5xKMdS8zrX9T0841Pu2IEE",
+    authDomain: "wangrang-calendar.firebaseapp.com",
+    projectId: "wangrang-calendar",
+    storageBucket: "wangrang-calendar.firebasestorage.app",
+    messagingSenderId: "908762327539",
+    appId: "1:908762327539:web:23a4e8dbdc78935322ca86"
+  };
+  function fileFilled(){
+    return FIREBASE_CONFIG && FIREBASE_CONFIG.apiKey && FIREBASE_CONFIG.apiKey.indexOf("ใส่_")<0 &&
+      FIREBASE_CONFIG.projectId && FIREBASE_CONFIG.projectId.indexOf("ใส่_")<0;
+  }
+  function savedConfig(){ try{ var r=read("fbConfig"); return r?JSON.parse(r):null; }catch(e){ return null; } }
+  function activeConfig(){
+    if(!window.firebase) return null;
+    if(fileFilled()) return FIREBASE_CONFIG;
+    var s=savedConfig();
+    if(s && s.apiKey && s.projectId) return s;
+    return null;
+  }
+  function cloudConfigured(){ return !!activeConfig(); }
+  var useCloud=false, db=null;
+
+  function setCloudBadge(state,msg){
+    var el=document.getElementById("cloudbar"); if(!el) return;
+    if(state==="ok") el.innerHTML='<span class="pill ok">☁️ เชื่อมฐานข้อมูลกลางแล้ว · ทุกเครื่องเห็นตรงกัน</span>';
+    else if(state==="err") el.innerHTML='<span class="pill err">⚠️ '+(msg||"เชื่อมต่อฐานข้อมูลไม่สำเร็จ")+' — ใช้แบบเฉพาะเครื่องชั่วคราว</span>';
+    else el.innerHTML='<span class="pill local">📱 โหมดเฉพาะเครื่องนี้</span> <button class="pill" id="setupBtn" style="background:#ede9fe;color:#7c3aed;border:none;cursor:pointer;font-family:inherit;">⚙️ ตั้งค่าฐานข้อมูลกลาง</button>';
+  }
+
+  function cloudSet(ev){
+    if(!useCloud||!db) return;
+    db.collection("events").doc(ev.id).set({title:ev.title,cat:ev.cat,start:ev.start,end:ev.end||null,note:ev.note||""})
+      .catch(function(e){ console.error("save error",e); toast("⚠️ บันทึกขึ้นฐานข้อมูลไม่สำเร็จ"); });
+  }
+  function cloudDel(id){
+    if(!useCloud||!db) return;
+    db.collection("events").doc(id).delete().catch(function(e){ console.error("del error",e); });
+  }
+  function initCloud(){
+    try{
+      firebase.initializeApp(activeConfig());
+      db=firebase.firestore();
+      useCloud=true;
+      // seed ครั้งแรกครั้งเดียว (กันซ้ำด้วย _meta/init)
+      var metaRef=db.collection("_meta").doc("init");
+      metaRef.get().then(function(s){
+        if(!s.exists){
+          var batch=db.batch();
+          seed().forEach(function(ev){
+            batch.set(db.collection("events").doc(ev.id),{title:ev.title,cat:ev.cat,start:ev.start,end:ev.end||null,note:ev.note||""});
+          });
+          batch.set(metaRef,{seeded:true,at:Date.now()});
+          batch.commit().catch(function(e){ console.error("seed error",e); });
+        }
+      }).catch(function(e){ console.error("meta error",e); });
+      // ฟังการเปลี่ยนแปลงแบบเรียลไทม์
+      db.collection("events").onSnapshot(function(snap){
+        var arr=[]; snap.forEach(function(d){ var x=d.data(); x.id=d.id; arr.push(x); });
+        events=arr; render(); setCloudBadge("ok");
+      },function(err){ console.error("snapshot error",err); setCloudBadge("err","เชื่อมต่อไม่สำเร็จ (ตรวจ config/กฎความปลอดภัย)"); });
+    }catch(e){ console.error("init error",e); useCloud=false; events=load(); render(); setCloudBadge("err","ตั้งค่า Firebase ไม่ถูกต้อง"); }
+  }
+
+  var CATEGORIES={
+    holiday:   {label:"วันหยุด",           color:"#fb7185",em:"🌴"},
+    religious: {label:"วันสำคัญ/ศาสนา",     color:"#f59e0b",em:"🙏"},
+    exam:      {label:"สอบ/ประเมินผล",      color:"#8b5cf6",em:"📝"},
+    activity:  {label:"กิจกรรมโรงเรียน",    color:"#10b981",em:"🎉"},
+    submit:    {label:"ส่งงาน/แผนการสอน",   color:"#ec4899",em:"📤"},
+    meeting:   {label:"อบรม/ประชุม",        color:"#38bdf8",em:"👥"}
+  };
+  var CAT_ORDER=["holiday","religious","exam","activity","submit","meeting"];
+
+  var MONTHS=["มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน","กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม"];
+  var MONTHS_SHORT=["ม.ค.","ก.พ.","มี.ค.","เม.ย.","พ.ค.","มิ.ย.","ก.ค.","ส.ค.","ก.ย.","ต.ค.","พ.ย.","ธ.ค."];
+  var DOW=["อา","จ","อ","พ","พฤ","ศ","ส"];
+
+  function seed(){
+    var e=[];
+    function add(t,c,s,en,n){ e.push({id:uid(),title:t,cat:c,start:s,end:en||null,note:n||""}); }
+    // วันหยุด (อ้างอิงประกาศ ครม. ปี 2569)
+    add("วันแรงงานแห่งชาติ","holiday","2026-05-01");
+    add("วันฉัตรมงคล","holiday","2026-05-04");
+    add("วันพืชมงคล","holiday","2026-05-11");
+    add("วันหยุดชดเชยวันวิสาขบูชา","holiday","2026-06-01");
+    add("วันเฉลิมพระชนมพรรษา สมเด็จพระนางเจ้าฯ พระบรมราชินี","holiday","2026-06-03");
+    add("วันเฉลิมพระชนมพรรษา พระบาทสมเด็จพระเจ้าอยู่หัว","holiday","2026-07-28");
+    add("วันแม่แห่งชาติ","holiday","2026-08-12");
+    add("วันนวมินทรมหาราช (คล้ายวันสวรรคต ร.๙)","holiday","2026-10-13");
+    add("วันปิยมหาราช","holiday","2026-10-23");
+    add("วันชาติ / วันพ่อแห่งชาติ","holiday","2026-12-05");
+    add("วันรัฐธรรมนูญ","holiday","2026-12-10");
+    add("วันสิ้นปี","holiday","2026-12-31");
+    add("วันขึ้นปีใหม่","holiday","2027-01-01");
+    // วันสำคัญ/ศาสนา
+    add("วันวิสาขบูชา","religious","2026-05-31");
+    add("วันงดสูบบุหรี่โลก","religious","2026-05-31");
+    add("วันสิ่งแวดล้อมโลก","religious","2026-06-05");
+    add("วันสุนทรภู่ / วันต่อต้านยาเสพติดโลก","religious","2026-06-26");
+    add("วันคล้ายวันสถาปนาคณะลูกเสือแห่งชาติ","religious","2026-07-01");
+    add("วันอาสาฬหบูชา","religious","2026-07-29");
+    add("วันเข้าพรรษา","religious","2026-07-30");
+    add("วันวิทยาศาสตร์แห่งชาติ","religious","2026-08-18");
+    add("วันออกพรรษา","religious","2026-09-26");
+    add("วันพระราชทานธงชาติไทย","religious","2026-09-28");
+    add("วันเด็กแห่งชาติ","religious","2027-01-09");
+    add("วันครู","religious","2027-01-16");
+    // กิจกรรมโรงเรียน (ตัวอย่าง แก้ไขได้)
+    add("เปิดภาคเรียนที่ ๑ ปีการศึกษา ๒๕๖๙","activity","2026-05-18","","ปรับตามปฏิทินจริงของโรงเรียน");
+    add("พิธีไหว้ครู","activity","2026-06-11");
+    add("กิจกรรมวันสุนทรภู่ / ต่อต้านยาเสพติด","activity","2026-06-26");
+    add("กิจกรรมสัปดาห์วิทยาศาสตร์","activity","2026-08-17","2026-08-21");
+    add("เข้าค่ายลูกเสือ–เนตรนารี","activity","2026-09-10","2026-09-11");
+    add("ปิดภาคเรียนที่ ๑","activity","2026-10-11","2026-10-31");
+    add("เปิดภาคเรียนที่ ๒ ปีการศึกษา ๒๕๖๙","activity","2026-11-01");
+    add("กิจกรรมวันลอยกระทง","activity","2026-11-24");
+    add("กิจกรรมกีฬาสี","activity","2026-12-24","2026-12-25");
+    add("กิจกรรมวันเด็ก","activity","2027-01-09");
+    // สอบ/ประเมินผล (ตัวอย่าง)
+    add("สอบกลางภาค ภาคเรียนที่ ๑","exam","2026-07-20","2026-07-24");
+    add("ประเมินการอ่านออกเขียนได้ ภาคเรียนที่ ๑","exam","2026-08-24","2026-08-28");
+    add("สอบปลายภาค ภาคเรียนที่ ๑","exam","2026-09-28","2026-10-02");
+    add("สอบกลางภาค ภาคเรียนที่ ๒","exam","2026-12-21","2026-12-25");
+    add("ทดสอบ O-NET ป.๖","exam","2027-02-06");
+    add("ประเมินการอ่าน (RT) ป.๑","exam","2027-02-17","2027-02-18");
+    add("ประเมินคุณภาพผู้เรียน (NT) ป.๓","exam","2027-03-05");
+    add("สอบปลายภาค ภาคเรียนที่ ๒","exam","2027-03-08","2027-03-12");
+    // ส่งงาน/แผนการสอน (ตัวอย่าง)
+    add("ส่งแผนการจัดการเรียนรู้ ภาคเรียนที่ ๑","submit","2026-05-29");
+    add("ส่งวิจัยในชั้นเรียน ภาคเรียนที่ ๑","submit","2026-09-18");
+    add("ส่งแบบบันทึกหลังสอน / ปพ.๕","submit","2026-10-02");
+    add("ส่งแผนการจัดการเรียนรู้ ภาคเรียนที่ ๒","submit","2026-10-30");
+    add("ส่งวิจัยในชั้นเรียน ภาคเรียนที่ ๒","submit","2027-02-27");
+    // อบรม/ประชุม (ตัวอย่าง)
+    add("ประชุมครูก่อนเปิดภาคเรียน","meeting","2026-05-15");
+    add("ประชุมประจำเดือน","meeting","2026-06-30");
+    add("อบรมพัฒนาครู (Active Learning / STEM)","meeting","2026-08-08");
+    add("ประชุมผู้ปกครอง ภาคเรียนที่ ๒","meeting","2026-11-14");
+    return e;
+  }
+  function uid(){ return "e"+Date.now().toString(36)+Math.random().toString(36).slice(2,7); }
+
+  var events=[];
+  var view=new Date(); view.setDate(1);
+  var hidden={};
+  var editingId=null;
+  var selectedCat="activity";
+
+  function load(){
+    var raw=read(STORE_KEY);
+    if(raw){ try{var a=JSON.parse(raw); if(Array.isArray(a)) return a;}catch(e){} }
+    var s=seed(); write(STORE_KEY,JSON.stringify(s)); return s;
+  }
+  function persist(){ write(STORE_KEY,JSON.stringify(events)); }
+
+  function toast(msg){ var t=document.getElementById("toast"); t.textContent=msg; t.classList.add("show");
+    clearTimeout(t._t); t._t=setTimeout(function(){t.classList.remove("show");},1900); }
+
+  function iso(d){ var m=d.getMonth()+1,day=d.getDate(); return d.getFullYear()+"-"+(m<10?"0"+m:m)+"-"+(day<10?"0"+day:day); }
+  function parse(s){ var p=s.split("-"); return new Date(+p[0],+p[1]-1,+p[2]); }
+  function stripTime(d){ return new Date(d.getFullYear(),d.getMonth(),d.getDate()); }
+  function beYear(y){ return y+543; }
+  function toThai(str){ var m={"0":"๐","1":"๑","2":"๒","3":"๓","4":"๔","5":"๕","6":"๖","7":"๗","8":"๘","9":"๙"};
+    return (""+str).replace(/[0-9]/g,function(c){return m[c];}); }
+  function sameDay(a,b){ return a.getFullYear()===b.getFullYear()&&a.getMonth()===b.getMonth()&&a.getDate()===b.getDate(); }
+  function inRange(day,ev){ var s=stripTime(parse(ev.start)); var e=ev.end?stripTime(parse(ev.end)):s;
+    var t=day.getTime(); return t>=s.getTime()&&t<=e.getTime(); }
+  function esc(s){ return (s||"").replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];}); }
+
+  function render(){ renderDow(); renderGrid(); renderLegend(); renderUpcoming();
+    document.getElementById("monthTitle").textContent=MONTHS[view.getMonth()]+" "+toThai(beYear(view.getFullYear())); }
+
+  function renderDow(){ var el=document.getElementById("dow"); el.innerHTML="";
+    DOW.forEach(function(d,i){ var c=document.createElement("div"); c.textContent=d; if(i===0||i===6) c.className="wknd"; el.appendChild(c); }); }
+
+  function renderGrid(){
+    var grid=document.getElementById("grid"); grid.innerHTML="";
+    var y=view.getFullYear(),m=view.getMonth();
+    var startPad=new Date(y,m,1).getDay();
+    var daysInMonth=new Date(y,m+1,0).getDate();
+    var today=new Date();
+    var total=Math.ceil((startPad+daysInMonth)/7)*7;
+    for(var i=0;i<total;i++){
+      var dayNum=i-startPad+1;
+      var cell=document.createElement("div"); cell.className="cell";
+      var cellDate=new Date(y,m,dayNum);
+      if(dayNum<1||dayNum>daysInMonth){ cell.classList.add("out");
+        cell.innerHTML='<div class="dnum">'+toThai(cellDate.getDate())+'</div>'; grid.appendChild(cell); continue; }
+      var dow=cellDate.getDay();
+      if(dow===0||dow===6) cell.classList.add("wknd");
+      if(sameDay(cellDate,today)) cell.classList.add("today");
+      cell.innerHTML='<div class="dnum">'+toThai(dayNum)+'</div><div class="add-hint">＋</div>';
+      var wrap=document.createElement("div"); wrap.className="pills";
+      var dayEvents=events.filter(function(ev){ return !hidden[ev.cat]&&inRange(cellDate,ev); });
+      dayEvents.slice(0,3).forEach(function(ev){
+        var c=CATEGORIES[ev.cat]||{color:"#888",em:"•"};
+        var p=document.createElement("div"); p.className="pill"; p.textContent=c.em+" "+ev.title;
+        p.style.background=c.color;
+        (function(id){ p.addEventListener("click",function(e2){ e2.stopPropagation(); openEdit(id); }); })(ev.id);
+        wrap.appendChild(p);
+      });
+      if(dayEvents.length>3){ var more=document.createElement("div"); more.className="more"; more.textContent="+"+toThai(dayEvents.length-3)+" เพิ่มเติม"; wrap.appendChild(more); }
+      cell.appendChild(wrap);
+      (function(ds){ cell.addEventListener("click",function(){ openDay(ds); }); })(iso(cellDate));
+      grid.appendChild(cell);
+    }
+  }
+
+  function renderLegend(){
+    var el=document.getElementById("legend"); el.innerHTML="";
+    CAT_ORDER.forEach(function(key){
+      var c=CATEGORIES[key];
+      var cnt=events.filter(function(e){return e.cat===key;}).length;
+      var row=document.createElement("div"); row.className="legend-item"+(hidden[key]?" off":"");
+      row.innerHTML='<span class="em">'+c.em+'</span><span class="dot" style="background:'+c.color+'"></span>'+
+        '<span>'+c.label+'</span><span class="cnt">'+toThai(cnt)+'</span>';
+      row.addEventListener("click",function(){ hidden[key]=!hidden[key]; render(); });
+      el.appendChild(row);
+    });
+  }
+
+  function renderUpcoming(){
+    var el=document.getElementById("upcoming"); el.innerHTML="";
+    var today=stripTime(new Date());
+    var up=events.filter(function(e){ var end=e.end?parse(e.end):parse(e.start);
+      return !hidden[e.cat]&&stripTime(end).getTime()>=today.getTime(); })
+      .sort(function(a,b){ return parse(a.start)-parse(b.start); }).slice(0,8);
+    if(up.length===0){ el.innerHTML='<div class="up-empty">🎈 ไม่มีกิจกรรมที่จะถึง</div>'; return; }
+    up.forEach(function(ev){
+      var d=parse(ev.start); var c=CATEGORIES[ev.cat];
+      var item=document.createElement("div"); item.className="up-item";
+      item.innerHTML='<div class="up-date"><div class="d">'+toThai(d.getDate())+'</div><div class="m">'+MONTHS_SHORT[d.getMonth()]+'</div></div>'+
+        '<div class="up-body"><div class="up-title">'+esc(ev.title)+'</div>'+
+        '<div class="up-cat" style="color:'+c.color+'">'+c.em+' '+c.label+'</div></div>';
+      item.addEventListener("click",function(){ view=new Date(d.getFullYear(),d.getMonth(),1); render(); openEdit(ev.id); });
+      el.appendChild(item);
+    });
+  }
+
+  // modal
+  var overlay=document.getElementById("overlay");
+  function buildCatGrid(){
+    var g=document.getElementById("catGrid"); g.innerHTML="";
+    CAT_ORDER.forEach(function(key){
+      var c=CATEGORIES[key];
+      var opt=document.createElement("div"); opt.className="cat-opt"+(selectedCat===key?" sel":"");
+      opt.innerHTML='<span class="em">'+c.em+'</span>'+c.label;
+      opt.addEventListener("click",function(){ selectedCat=key;
+        Array.prototype.forEach.call(g.children,function(ch){ch.classList.remove("sel");}); opt.classList.add("sel"); });
+      g.appendChild(opt);
+    });
+  }
+  function openAdd(dateStr){
+    editingId=null; selectedCat="activity";
+    document.getElementById("modalTitle").textContent="✏️ เพิ่มกิจกรรม";
+    document.getElementById("fTitle").value="";
+    document.getElementById("fStart").value=dateStr||iso(new Date());
+    document.getElementById("fEnd").value="";
+    document.getElementById("fNote").value="";
+    document.getElementById("delBtn").style.display="none";
+    document.getElementById("fErr").style.display="none";
+    buildCatGrid(); overlay.classList.add("show"); overlay._t=Date.now(); document.getElementById("fTitle").focus();
+  }
+  function openEdit(id){
+    var ev=events.find(function(e){return e.id===id;}); if(!ev) return;
+    editingId=id; selectedCat=ev.cat;
+    document.getElementById("modalTitle").textContent="✏️ แก้ไขกิจกรรม";
+    document.getElementById("fTitle").value=ev.title;
+    document.getElementById("fStart").value=ev.start;
+    document.getElementById("fEnd").value=ev.end||"";
+    document.getElementById("fNote").value=ev.note||"";
+    document.getElementById("delBtn").style.display="inline-block";
+    document.getElementById("fErr").style.display="none";
+    buildCatGrid(); overlay.classList.add("show"); overlay._t=Date.now();
+  }
+  function closeModal(){ overlay.classList.remove("show"); }
+
+  function saveEvent(){
+    var title=document.getElementById("fTitle").value.trim();
+    var start=document.getElementById("fStart").value;
+    var end=document.getElementById("fEnd").value;
+    var note=document.getElementById("fNote").value.trim();
+    if(!title||!start){ document.getElementById("fErr").style.display="block"; return; }
+    if(end&&parse(end)<parse(start)) end=start;
+    var target;
+    if(editingId){ target=events.find(function(e){return e.id===editingId;});
+      if(target){ target.title=title; target.cat=selectedCat; target.start=start; target.end=end||null; target.note=note; }
+      toast("💾 บันทึกการแก้ไขแล้ว");
+    }else{ target={id:uid(),title:title,cat:selectedCat,start:start,end:end||null,note:note}; events.push(target); toast("🎉 เพิ่มกิจกรรมแล้ว"); }
+    if(useCloud){ cloudSet(target); } else { persist(); }
+    closeModal(); render();
+  }
+  function deleteEvent(){
+    if(!editingId) return;
+    if(!confirm("ต้องการลบกิจกรรมนี้ใช่หรือไม่?")) return;
+    var delId=editingId;
+    events=events.filter(function(e){return e.id!==delId;});
+    if(useCloud){ cloudDel(delId); } else { persist(); }
+    closeModal(); render(); toast("🗑️ ลบกิจกรรมแล้ว");
+  }
+
+  function exportData(){
+    var blob=new Blob([JSON.stringify(events,null,2)],{type:"application/json"});
+    var url=URL.createObjectURL(blob); var a=document.createElement("a");
+    a.href=url; a.download="ปฏิทินวิชาการ-2569-สำรอง.json";
+    document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+    toast("⬇️ สำรองข้อมูลแล้ว");
+  }
+  function importData(file){
+    var r=new FileReader();
+    r.onload=function(){ try{ var a=JSON.parse(r.result);
+      if(Array.isArray(a)){ if(confirm("กู้คืนข้อมูลจากไฟล์นี้? ข้อมูลปัจจุบันจะถูกแทนที่")){
+        if(useCloud){ var batch=db.batch();
+          a.forEach(function(ev){ if(!ev.id) ev.id=uid();
+            batch.set(db.collection("events").doc(ev.id),{title:ev.title,cat:ev.cat,start:ev.start,end:ev.end||null,note:ev.note||""}); });
+          batch.commit().then(function(){ toast("⬆️ กู้คืนขึ้นฐานข้อมูลกลางแล้ว"); }).catch(function(e){ console.error(e); toast("⚠️ กู้คืนไม่สำเร็จ"); });
+        } else { events=a; persist(); render(); toast("⬆️ กู้คืนข้อมูลแล้ว"); }
+      } }
+      else alert("ไฟล์ไม่ถูกต้อง"); }catch(e){ alert("อ่านไฟล์ไม่สำเร็จ"); } };
+    r.readAsText(file);
+  }
+
+  // day sheet (แตะวันเพื่อดูรายการกิจกรรมของวันนั้น)
+  var dayOverlay=document.getElementById("dayOverlay");
+  var dayCtx=null;
+  function openDay(dateStr){
+    dayCtx=dateStr;
+    var d=parse(dateStr);
+    document.getElementById("daySheetTitle").textContent="📆 "+toThai(d.getDate())+" "+MONTHS[d.getMonth()]+" "+toThai(beYear(d.getFullYear()));
+    var list=document.getElementById("dayList"); list.innerHTML="";
+    var dayEvents=events.filter(function(ev){ return inRange(d,ev); });
+    if(dayEvents.length===0){
+      list.innerHTML='<div class="up-empty">🎈 ยังไม่มีกิจกรรมในวันนี้<br><span style="font-size:.85rem;">กดปุ่มด้านล่างเพื่อเพิ่มกิจกรรม</span></div>';
+    }else{
+      dayEvents.forEach(function(ev){
+        var c=CATEGORIES[ev.cat]||{color:"#888",em:"•",label:""};
+        var row=document.createElement("div"); row.className="day-ev";
+        row.innerHTML='<span class="day-dot" style="background:'+c.color+'"></span>'+
+          '<div class="day-ev-body"><div class="day-ev-title">'+c.em+' '+esc(ev.title)+'</div>'+
+          '<div class="day-ev-cat" style="color:'+c.color+'">'+c.label+(ev.note?' · '+esc(ev.note):'')+'</div></div>'+
+          '<span class="day-ev-edit">✏️</span>';
+        (function(id){ row.addEventListener("click",function(){ closeDay(); openEdit(id); }); })(ev.id);
+        list.appendChild(row);
+      });
+    }
+    dayOverlay.classList.add("show"); dayOverlay._t=Date.now();
+  }
+  function closeDay(){ dayOverlay.classList.remove("show"); }
+  document.getElementById("closeDay").addEventListener("click",closeDay);
+  document.getElementById("dayAddBtn").addEventListener("click",function(){ closeDay(); openAdd(dayCtx); });
+  dayOverlay.addEventListener("click",function(e){ if(e.target===dayOverlay && Date.now()-(dayOverlay._t||0)>450) closeDay(); });
+
+  document.getElementById("prev").addEventListener("click",function(){ view.setMonth(view.getMonth()-1); render(); });
+  document.getElementById("next").addEventListener("click",function(){ view.setMonth(view.getMonth()+1); render(); });
+  document.getElementById("todayBtn").addEventListener("click",function(){ view=new Date(); view.setDate(1); render(); });
+  document.getElementById("addBtn").addEventListener("click",function(){ openAdd(iso(new Date())); });
+  document.getElementById("saveBtn").addEventListener("click",saveEvent);
+  document.getElementById("delBtn").addEventListener("click",deleteEvent);
+  document.getElementById("cancelBtn").addEventListener("click",closeModal);
+  document.getElementById("closeModal").addEventListener("click",closeModal);
+  overlay.addEventListener("click",function(e){ if(e.target===overlay && Date.now()-(overlay._t||0)>450) closeModal(); });
+  document.addEventListener("keydown",function(e){ if(e.key==="Escape"){ closeModal(); closeDay(); closeSetup(); } });
+  document.getElementById("printBtn").addEventListener("click",function(){ window.print(); });
+  document.getElementById("exportBtn").addEventListener("click",exportData);
+  document.getElementById("importBtn").addEventListener("click",function(){ document.getElementById("importFile").click(); });
+  document.getElementById("importFile").addEventListener("change",function(e){ if(e.target.files[0]) importData(e.target.files[0]); e.target.value=""; });
+
+  // ---- หน้าตั้งค่า Firebase (ตั้งผ่านแอปได้ ไม่ต้องแก้ไฟล์) ----
+  var setupOverlay=document.getElementById("setupOverlay");
+  function openSetup(){
+    var s=savedConfig();
+    document.getElementById("setupText").value=s?JSON.stringify(s,null,2):"";
+    document.getElementById("setupErr").style.display="none";
+    setupOverlay.classList.add("show"); setupOverlay._t=Date.now();
+  }
+  function closeSetup(){ setupOverlay.classList.remove("show"); }
+  function saveSetup(){
+    var txt=document.getElementById("setupText").value.trim();
+    try{
+      var m=txt.match(/\{[\s\S]*\}/); if(!m) throw 0;
+      var obj=(new Function("return ("+m[0]+")"))();
+      if(!obj||!obj.apiKey||!obj.projectId) throw 0;
+      write("fbConfig",JSON.stringify(obj));
+      toast("✅ บันทึกแล้ว กำลังเชื่อมต่อ...");
+      setTimeout(function(){ location.reload(); },700);
+    }catch(e){ document.getElementById("setupErr").style.display="block"; }
+  }
+  document.getElementById("closeSetup").addEventListener("click",closeSetup);
+  document.getElementById("cancelSetup").addEventListener("click",closeSetup);
+  document.getElementById("saveSetup").addEventListener("click",saveSetup);
+  setupOverlay.addEventListener("click",function(e){ if(e.target===setupOverlay && Date.now()-(setupOverlay._t||0)>450) closeSetup(); });
+  document.getElementById("cloudbar").addEventListener("click",function(e){ if(e.target&&e.target.id==="setupBtn") openSetup(); });
+
+  // เริ่มทำงาน: ถ้าตั้งค่า Firebase แล้วใช้ฐานข้อมูลกลาง ไม่งั้นใช้เฉพาะเครื่อง
+  if(cloudConfigured()){
+    document.getElementById("cloudbar").innerHTML='<span class="pill local">☁️ กำลังเชื่อมฐานข้อมูล...</span>';
+    render();
+    initCloud();
+  }else{
+    events=load(); setCloudBadge("local"); render();
+  }
+})();
+</script>
+</body>
+</html>
